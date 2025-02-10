@@ -76,8 +76,10 @@ def edit_jobseeker_profile(request):
 
     return render(request, 'accounts/edit_jobseeker_profile.html', {'form': form})
 
+from django.urls import reverse
+
 def profile_success(request):
-    return render(request, 'accounts/profile_success.html')
+    return render(request, 'accounts/profile_success.html', {'otp_url': reverse('two_factor:profile')})
 
 class PasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset.html'

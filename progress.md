@@ -15,6 +15,12 @@
 - Implemented password reset functionality.
 - Created password reset templates.
 - Added login/logout buttons and routes to the home page.
+- Configured Django project to use django-two-factor-auth package.
+- Ran migrations.
+- Added link to manage two-factor authentication in the user's profile page.
+- Started the development server.
+- Installed the `phonenumbers` package.
+- Configured two-factor authentication URLs.
 
 **What's left to build:**
 - The rest of the project, as defined in tasklist.md

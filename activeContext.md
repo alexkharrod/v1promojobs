@@ -19,3 +19,8 @@
 - Implement two-factor authentication support.
 - Created login buttons and routes for the home page.
 - CSRF tokens are enabled.
+- Configured Django project to use django-two-factor-auth package.
+- Ran migrations.
+- Added link to manage two-factor authentication in the user's profile page.
+- Started the development server.
+- Installed the `phonenumbers` package.
