@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'two_factor',
     'django_otp',
     'django_otp.plugins.otp_static',
+    'jobs',
+    'employers',
+    'applications',
 ]
 
 MIDDLEWARE = [

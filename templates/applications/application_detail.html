@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Application Detail</h2>
+  <p>Job: {{ application.job.title }}</p>
+  <p>Job Seeker: {{ application.job_seeker.user.username }}</p>
+  <p>Application Date: {{ application.application_date }}</p>
+  <p>Status: {{ application.status }}</p>
+  <a href="{% url 'update_application_status' pk=application.pk %}">Update Status</a>
+{% endblock %}

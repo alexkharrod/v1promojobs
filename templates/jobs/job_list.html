@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+{% block content %}
+  <h2>Job Listings</h2>
+
+  <form method="get">
+    <input type="text" name="q" placeholder="Search by title">
+    <select name="industry">
+      <option value="">All Industries</option>
+      <option value="technology">Technology</option>
+      <option value="healthcare">Healthcare</option>
+      <option value="finance">Finance</option>
+    </select>
+    <button type="submit">Search</button>
+  </form>
+
+  <ul>
+    {% for job in jobs %}
+      <li><a href="{% url 'job_detail' pk=job.pk %}">{{ job.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'job_create' %}">Create New Job Listing</a>
+{% endblock %}

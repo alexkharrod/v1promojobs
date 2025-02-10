@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ job.title }}</h2>
+  <p>Location: {{ job.location }}</p>
+  <p>Salary: {{ job.salary }}</p>
+  <p>Description: {{ job.description }}</p>
+  {% if job.image %}
+    <img src="{{ job.image.url }}" alt="{{ job.title }}">
+  {% endif %}
+  <a href="{% url 'job_edit' pk=job.pk %}">Edit Job Listing</a>
+{% endblock %}

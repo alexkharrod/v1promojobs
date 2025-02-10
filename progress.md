@@ -34,6 +34,15 @@
 - Implemented search and discovery features with industry-specific filters.
 - Implemented saved searches and alerts.
 - Wrote unit tests for job management logic.
+- Created `employers` app.
+- Implemented Employer model in `employers/models.py`.
+- Implemented views for creating and managing employer profiles.
+- Wrote unit tests for employer management logic.
+- Created `applications` app.
+- Implemented Application model in `applications/models.py`.
+- Implemented views for job seekers to apply for jobs.
+- Implemented views for employers to review applications.
+- Wrote unit tests for application management logic.
 
 **What's left to build:**
 - The rest of the project, as defined in tasklist.md
@@ -51,3 +60,12 @@
 - Search and discovery features implemented
 - Saved searches and alerts implemented
 - Unit tests for job management logic written
+- Employers app created
+- Employer model implemented
+- Employer profile views implemented
+- Unit tests for employer management logic written
+- Applications app created
+- Application model implemented
+- Job application views implemented
+- Employer application review views implemented
+- Unit tests for application management logic written

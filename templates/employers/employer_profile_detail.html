@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ employer.company_name }}</h2>
+  <p>{{ employer.company_description }}</p>
+  <p><a href="{{ employer.website }}">{{ employer.website }}</a></p>
+  {% if employer.logo %}
+    <img src="{{ employer.logo.url }}" alt="{{ employer.company_name }}">
+  {% endif %}
+{% endblock %}
