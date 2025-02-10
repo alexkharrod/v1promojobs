@@ -21,9 +21,33 @@
 - Started the development server.
 - Installed the `phonenumbers` package.
 - Configured two-factor authentication URLs.
+- Created `/docs` directory and `adr` subdirectory with `template.md` file.
+- Updated `README.md` file.
+- Created `/src/utils/errors.ts` file.
+- Implemented two-factor authentication support using `django-two-factor-auth` package.
+- Created `templates/two_factor/_base.html` template.
+- Wrote unit tests for user management logic.
+- Created `jobs` app.
+- Implemented Job model in `jobs/models.py`.
+- Implemented views for creating, editing, and managing job listings.
+- Created migrations for the `jobs` app.
+- Implemented search and discovery features with industry-specific filters.
+- Implemented saved searches and alerts.
+- Wrote unit tests for job management logic.
 
 **What's left to build:**
 - The rest of the project, as defined in tasklist.md
 
 **Progress status:**
 - Task list created
+- Documentation initialized
+- Two-factor authentication implemented
+- Two-factor authentication templates styled
+- Unit tests for user management logic written
+- Jobs app created
+- Job model implemented
+- Job listing views implemented
+- Jobs app migrations created and applied
+- Search and discovery features implemented
+- Saved searches and alerts implemented
+- Unit tests for job management logic written
