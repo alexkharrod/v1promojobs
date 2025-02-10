@@ -6,9 +6,16 @@
 - Django 4.2 installed
 - .venv created
 - .env with SECRET_KEY created
-- Created tasklist.md
+- Database configured
+- Project structure created
+- Accounts app created
+- Implemented User model with dual user types (Employer/Job Seeker) as per `systemPatterns.md`.
+- Implemented profile management features.
+- Implemented session-based authentication.
+- Implemented role-based access control.
+- Implemented registration, login, logout views.
 
 **Next steps:**
-- Start working on the tasks in the tasklist.md file.
-- Activate the virtual environment.
-- Install project dependencies.
+- Implement two-factor authentication support.
+- Created login buttons and routes for the home page.
+- CSRF tokens are enabled.

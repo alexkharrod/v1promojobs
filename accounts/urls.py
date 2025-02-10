@@ -8,4 +8,8 @@ urlpatterns = [
     path('employer/profile/', views.edit_employer_profile, name='edit_employer_profile'),
     path('jobseeker/profile/', views.edit_jobseeker_profile, name='edit_jobseeker_profile'),
     path('profile/success/', views.profile_success, name='profile_success'),
+    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password_reset/confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password_reset/complete/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

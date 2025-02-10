@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Employer, JobSeeker
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Employer, JobSeeker, User
 from .forms import EmployerProfileForm, JobSeekerProfileForm, RegistrationForm  # Import RegistrationForm
 from django.contrib.auth import login, authenticate, logout  # Import authenticate and logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 def register(request):
     if request.method == 'POST':
@@ -11,7 +12,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('profile_success')  # Redirect to profile success page
+            return redirect('profile_success')
     else:
         form = RegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
@@ -40,6 +41,7 @@ def logout_view(request):
     return redirect('home')  # Redirect to home page
 
 @login_required
+@user_passes_test(lambda u: u.user_type == 'employer')
 def edit_employer_profile(request):
     try:
         employer = request.user.employer
@@ -57,6 +59,7 @@ def edit_employer_profile(request):
     return render(request, 'accounts/edit_employer_profile.html', {'form': form})
 
 @login_required
+@user_passes_test(lambda u: u.user_type == 'jobseeker')
 def edit_jobseeker_profile(request):
     try:
         jobseeker = request.user.jobseeker
@@ -75,3 +78,18 @@ def edit_jobseeker_profile(request):
 
 def profile_success(request):
     return render(request, 'accounts/profile_success.html')
+
+class PasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    email_template_name = 'accounts/password_reset_email.html'
+    success_url = '/accounts/password_reset/done/'
+
+class PasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+class PasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+    success_url = '/accounts/password_reset/complete/'
+
+class PasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'

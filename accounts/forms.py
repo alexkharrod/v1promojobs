@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
 from .models import User, Employer, JobSeeker
 
 class RegistrationForm(UserCreationForm):
@@ -16,3 +16,9 @@ class JobSeekerProfileForm(forms.ModelForm):
     class Meta:
         model = JobSeeker
         fields = ['bio', 'resume', 'skills']
+
+class PasswordResetForm(PasswordResetForm):
+    pass
+
+class SetPasswordForm(SetPasswordForm):
+    pass
