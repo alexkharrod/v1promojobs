@@ -10,5 +10,12 @@
         <a href="{% url 'register' %}">Register</a>
         <a href="{% url 'login' %}">Login</a>
     {% endif %}
+    <div id="root"></div>
+    <script type="text/javascript">
+      ReactDOM.render(
+        React.createElement(HelloWorld),
+        document.getElementById('root')
+      );
+    </script>
 </div>
 {% endblock %}

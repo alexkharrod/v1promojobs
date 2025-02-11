@@ -8,21 +8,36 @@ from django.contrib.auth.forms import (
 from employers.models import Employer
 
 from .models import JobSeeker, User
+from django.contrib.auth.hashers import make_password
 
-
-class RegistrationForm(UserCreationForm):
-    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
-
-    class Meta:
-        model = User
-        fields = ("username", "email", "user_type")
+class RegistrationForm(forms.Form):
+    username = forms.CharField(max_length=150, required=True)
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password", required=True)
+    user_type = forms.ChoiceField(choices=User.USER_TYPE_CHOICES, required=True)
 
     def clean_password2(self):
-        password = self.cleaned_data.get("password1")
+        password = self.cleaned_data.get("password")
         password2 = self.cleaned_data.get("password2")
         if password != password2:
             raise forms.ValidationError("Passwords do not match")
         return password2
+
+    def save(self):
+        username = self.cleaned_data.get("username")
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+        user_type = self.cleaned_data.get("user_type")
+
+        user = User.objects.create(
+            username=username,
+            email=email,
+            user_type=user_type,
+        )
+        user.password = make_password(password)
+        user.save()
+        return user
 
 
 class EmployerProfileForm(forms.ModelForm):

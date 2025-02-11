@@ -30,16 +30,19 @@ def obtain_auth_token(request):
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import RegistrationForm
+
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = RegistrationForm()
+    return render(request, 'accounts/register.html', {'form': form})
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 
