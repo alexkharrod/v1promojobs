@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Application  # Import the Application model
-from jobs.models import Job  # Import the Job model
-from accounts.models import JobSeeker  # Import the JobSeeker model
-from .forms import ApplicationForm  # Import the ApplicationForm
+from .models import Application
+from jobs.models import Job
+from accounts.models import JobSeeker
+from .forms import ApplicationForm
 
 @login_required
 def apply_for_job(request, job_id):

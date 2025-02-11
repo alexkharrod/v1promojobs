@@ -1,9 +1,16 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from .forms import RegistrationForm, EmployerProfileForm, JobSeekerProfileForm
+from employers.models import Employer
+from accounts.models import JobSeeker
+from core.models import UserActivity
+
 
 @csrf_exempt
 def obtain_auth_token(request):
@@ -29,10 +36,6 @@ def obtain_auth_token(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegistrationForm
-
 
 def register(request):
     if request.method == 'POST':
@@ -43,8 +46,7 @@ def register(request):
     else:
         form = RegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -52,20 +54,12 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            from core.models import UserActivity
             UserActivity.objects.create(user=user, activity_type='login')
             return redirect('home')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
 
-from django.contrib.auth import logout
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .forms import EmployerProfileForm, JobSeekerProfileForm
-from employers.models import Employer
-from accounts.models import JobSeeker
 
 @login_required
 def edit_employer_profile(request):
@@ -74,7 +68,6 @@ def edit_employer_profile(request):
     except Employer.DoesNotExist:
         employer_profile = None
 
-    from core.models import UserActivity
     UserActivity.objects.create(user=request.user, activity_type='view_employer_profile')
 
     if request.method == 'POST':
@@ -89,11 +82,11 @@ def edit_employer_profile(request):
 
     return render(request, 'accounts/edit_employer_profile.html', {'form': form, 'employer_profile': employer_profile})
 
-from django.contrib.auth import logout
 
 @login_required
 def profile_success(request):
     return render(request, 'accounts/profile_success.html')
+
 
 @login_required
 def edit_jobseeker_profile(request):
@@ -102,7 +95,6 @@ def edit_jobseeker_profile(request):
     except JobSeeker.DoesNotExist:
         jobseeker_profile = None
 
-    from core.models import UserActivity
     UserActivity.objects.create(user=request.user, activity_type='view_jobseeker_profile')
 
     if request.method == 'POST':
