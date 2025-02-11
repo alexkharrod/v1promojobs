@@ -39,6 +39,11 @@ def job_list(request):
     if industry:
         jobs = jobs.filter(industry=industry)
 
+    from core.models import UserActivity
+    if request.user.is_authenticated:
+        search_details = {'query': query, 'industry': industry}
+        UserActivity.objects.create(user=request.user, activity_type='job_search', details=search_details)
+
     return render(request, 'jobs/job_list.html', {'jobs': jobs})
 
 from django.contrib.auth.decorators import login_required
@@ -69,5 +74,7 @@ def delete_saved_search(request, pk):
     return redirect('saved_searches')
 
 def job_detail(request, pk):
-    job = get_object_or_404(Job, pk=pk)
+    job = Job.objects.get(pk=pk)
+    job.views += 1
+    job.save()
     return render(request, 'jobs/job_detail.html', {'job': job})

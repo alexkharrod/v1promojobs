@@ -52,6 +52,8 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            from core.models import UserActivity
+            UserActivity.objects.create(user=user, activity_type='login')
             return redirect('home')
     else:
         form = AuthenticationForm()
@@ -71,6 +73,9 @@ def edit_employer_profile(request):
         employer_profile = request.user.employer
     except Employer.DoesNotExist:
         employer_profile = None
+
+    from core.models import UserActivity
+    UserActivity.objects.create(user=request.user, activity_type='view_employer_profile')
 
     if request.method == 'POST':
         form = EmployerProfileForm(request.POST, instance=employer_profile)
@@ -96,6 +101,9 @@ def edit_jobseeker_profile(request):
         jobseeker_profile = request.user.jobseeker
     except JobSeeker.DoesNotExist:
         jobseeker_profile = None
+
+    from core.models import UserActivity
+    UserActivity.objects.create(user=request.user, activity_type='view_jobseeker_profile')
 
     if request.method == 'POST':
         form = JobSeekerProfileForm(request.POST, instance=jobseeker_profile)

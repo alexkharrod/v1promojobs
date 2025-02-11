@@ -11,6 +11,14 @@ class Application(models.Model):
     application_date = models.DateTimeField(auto_now_add=True)  # Date and time when the application was submitted
     status = models.CharField(max_length=50, default='Pending')  # Status of the application (e.g., Pending, Accepted, Rejected)
 
+    STATUS_CHOICES = (
+        ('submitted', 'Submitted'),
+        ('reviewed', 'Reviewed'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='submitted')
+
     def __str__(self):
         """
         Returns a string representation of the application.

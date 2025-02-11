@@ -1,4 +1,4 @@
-p## Progress
+## Progress
 
 **What works:**
 - Django 4.2 installation
@@ -74,9 +74,18 @@ p## Progress
 - Added edit_jobseeker_profile view and template
 - Added profile_success view and template
 - Fixed registration error
+- Integrated React for interactive components
+- Added more styling to the base template
+- Moved profile to the right side of the nav bar
+- Provided instructions on how to implement HTTPS
+- Provided best practices for preventing SQL injection
+- Provided best practices for preventing XSS
+- Implemented rate limiting
+- Implemented job posting performance metrics
 
 **What's left to build:**
-- Integrate React/Vue.js for interactive components.
+- Implement application tracking.
+- Implement user engagement analytics.
 - The rest of the project, as defined in tasklist.md
 
 **Progress status:**
@@ -132,3 +141,11 @@ p## Progress
 - Added edit_jobseeker_profile view and template
 - Added profile_success view and template
 - Fixed registration error
+- Integrated React for interactive components
+- Added more styling to the base template
+- Moved profile to the right side of the nav bar
+- Provided instructions on how to implement HTTPS
+- Provided best practices for preventing SQL injection
+- Provided best practices for preventing XSS
+- Implemented rate limiting
+- Implemented job posting performance metrics

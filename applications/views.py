@@ -14,6 +14,8 @@ def apply_for_job(request, job_id):
     if request.user.user_type == 'jobseeker':
         job_seeker = JobSeeker.objects.get(user=request.user)
         Application.objects.create(job=job, job_seeker=job_seeker)
+        job.applications += 1
+        job.save()
         return redirect('application_success')
     else:
         return redirect('application_failure')
@@ -47,7 +49,7 @@ def update_application_status(request, pk):
     if request.method == 'POST':
         form = ApplicationForm(request.POST, instance=application)
         if form.is_valid():
-            form.save()
+            application = form.save()
             return redirect('application_detail', pk=application.pk)
     else:
         form = ApplicationForm(instance=application)

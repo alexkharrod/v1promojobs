@@ -14,6 +14,9 @@ class Job(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)
 
+    views = models.IntegerField(default=0)
+    applications = models.IntegerField(default=0)
+
     def __str__(self):
         return self.title
 

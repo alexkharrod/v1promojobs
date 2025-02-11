@@ -8,5 +8,7 @@
   {% if job.image %}
     <img src="{{ job.image.url }}" alt="{{ job.title }}">
   {% endif %}
+  <p>Views: {{ job.views }}</p>
+  <p>Applications: {{ job.applications }}</p>
   <a href="{% url 'job_edit' pk=job.pk %}">Edit Job Listing</a>
 {% endblock %}
