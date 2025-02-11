@@ -1,80 +1,154 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Job, SavedSearch
-from .forms import JobForm
+from django.shortcuts import render, redirect, get_object_or_404  # Import necessary modules
+from django.contrib.auth.decorators import login_required  # Import the login_required decorator
+from .models import Job, SavedSearch  # Import the Job and SavedSearch models
+from .forms import JobForm, SavedSearchForm  # Import the JobForm and SavedSearchForm
+from core.models import UserActivity  # Import the UserActivity model
 
-@login_required
+
+@login_required  # Require the user to be logged in
 def job_create(request):
-    if request.method == 'POST':
-        form = JobForm(request.POST, request.FILES)
-        if form.is_valid():
-            job = form.save(commit=False)
-            job.employer = request.user.employer
-            job.save()
-            return redirect('job_detail', pk=job.pk)
+    """
+    View to create a new job listing.
+    """
+    if request.method == 'POST':  # Check if the request method is POST
+        form = JobForm(
+            request.POST, request.FILES
+        )  # Create a JobForm instance with the POST data and files
+        if form.is_valid():  # Check if the form is valid
+            job = form.save(
+                commit=False
+            )  # Save the form data to create a new job listing
+            job.employer = request.user.employer  # Set the employer for the job listing
+            job.save()  # Save the job listing
+            return redirect(
+                'job_detail', pk=job.pk
+            )  # Redirect to the job detail page
     else:
-        form = JobForm()
-    return render(request, 'jobs/job_create.html', {'form': form})
+        form = JobForm()  # Create an empty JobForm instance
+    return render(
+        request, 'jobs/job_create.html', {'form': form}
+    )  # Render the job create template
 
-@login_required
+
+@login_required  # Require the user to be logged in
 def job_edit(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-    if request.method == 'POST':
-        form = JobForm(request.POST, request.FILES, instance=job)
-        if form.is_valid():
-            job = form.save()
-            return redirect('job_detail', pk=job.pk)
+    """
+    View to edit an existing job listing.
+    """
+    job = get_object_or_404(
+        Job, pk=pk
+    )  # Get the job object or return a 404 error if not found
+    if request.method == 'POST':  # Check if the request method is POST
+        form = JobForm(
+            request.POST, request.FILES, instance=job
+        )  # Create a JobForm instance with the POST data, files, and the existing job listing
+        if form.is_valid():  # Check if the form is valid
+            job = form.save()  # Save the form data to update the job listing
+            return redirect(
+                'job_detail', pk=job.pk
+            )  # Redirect to the job detail page
     else:
-        form = JobForm(instance=job)
-    return render(request, 'jobs/job_edit.html', {'form': form, 'job': job})
+        form = JobForm(
+            instance=job
+        )  # Create a JobForm instance with the existing job listing
+    return render(
+        request, 'jobs/job_edit.html', {'form': form, 'job': job}
+    )  # Render the job edit template
+
 
 def job_list(request):
-    query = request.GET.get('q')
-    industry = request.GET.get('industry')
-    jobs = Job.objects.all()
+    """
+    Lists all job listings based on search criteria.
+    """
+    query = request.GET.get('q')  # Get the search query from the request
+    industry = request.GET.get('industry')  # Get the industry from the request
+    jobs = Job.objects.all()  # Get all job objects
 
-    if query:
-        jobs = jobs.filter(title__icontains=query)
+    if query:  # Check if a query is provided
+        jobs = jobs.filter(
+            title__icontains=query
+        )  # Filter jobs by title if a query is provided
 
-    if industry:
-        jobs = jobs.filter(industry=industry)
+    if industry:  # Check if an industry is provided
+        jobs = jobs.filter(
+            industry=industry
+        )  # Filter jobs by industry if an industry is provided
 
-    from core.models import UserActivity
-    if request.user.is_authenticated:
-        search_details = {'query': query, 'industry': industry}
-        UserActivity.objects.create(user=request.user, activity_type='job_search', details=search_details)
+    if request.user.is_authenticated:  # Check if the user is authenticated
+        search_details = {
+            'query': query,
+            'industry': industry,
+        }  # Create a dictionary with the search details
+        UserActivity.objects.create(
+            user=request.user, activity_type='job_search', details=search_details
+        )  # Create a UserActivity record for the job search
 
-    return render(request, 'jobs/job_list.html', {'jobs': jobs})
+    return render(
+        request, 'jobs/job_list.html', {'jobs': jobs}
+    )  # Render the job list template
 
-from django.contrib.auth.decorators import login_required
-from .forms import SavedSearchForm
 
-@login_required
+@login_required  # Require the user to be logged in
 def save_search(request):
-    if request.method == 'POST':
-        form = SavedSearchForm(request.POST)
-        if form.is_valid():
-            saved_search = form.save(commit=False)
-            saved_search.user = request.user
-            saved_search.save()
-            return redirect('saved_searches')
+    """
+    Saves a search query for a user.
+    """
+    if request.method == 'POST':  # Check if the request method is POST
+        form = SavedSearchForm(
+            request.POST
+        )  # Create a SavedSearchForm instance with the POST data
+        if form.is_valid():  # Check if the form is valid
+            saved_search = form.save(
+                commit=False
+            )  # Save the form data to create a new saved search
+            saved_search.user = request.user  # Set the user for the saved search
+            saved_search.save()  # Save the saved search
+            return redirect(
+                'saved_searches'
+            )  # Redirect to the saved searches page
     else:
-        form = SavedSearchForm()
-    return render(request, 'jobs/save_search.html', {'form': form})
+        form = SavedSearchForm()  # Create an empty SavedSearchForm instance
+    return render(
+        request, 'jobs/save_search.html', {'form': form}
+    )  # Render the save search template
 
-@login_required
+
+@login_required  # Require the user to be logged in
 def saved_searches(request):
-    saved_searches = SavedSearch.objects.filter(user=request.user)
-    return render(request, 'jobs/saved_searches.html', {'saved_searches': saved_searches})
+    """
+    Lists all saved searches for a user.
+    """
+    saved_searches = SavedSearch.objects.filter(
+        user=request.user
+    )  # Get all saved searches for the current user
+    return render(
+        request, 'jobs/saved_searches.html', {'saved_searches': saved_searches}
+    )  # Render the saved searches template
 
-@login_required
+
+@login_required  # Require the user to be logged in
 def delete_saved_search(request, pk):
-    saved_search = get_object_or_404(SavedSearch, pk=pk, user=request.user)
-    saved_search.delete()
-    return redirect('saved_searches')
+    """
+    Deletes a saved search.
+    """
+    saved_search = get_object_or_404(
+        SavedSearch, pk=pk, user=request.user
+    )  # Get the saved search object or return a 404 error if not found
+    saved_search.delete()  # Delete the saved search
+    return redirect(
+        'saved_searches'
+    )  # Redirect to the saved searches page
+
 
 def job_detail(request, pk):
-    job = Job.objects.get(pk=pk)
-    job.views += 1
-    job.save()
-    return render(request, 'jobs/job_detail.html', {'job': job})
+    """
+    Displays the details of a specific job.
+    """
+    job = get_object_or_404(
+        Job, pk=pk
+    )  # Get the job object or return a 404 error if not found
+    job.views += 1  # Increment the view count for the job
+    job.save()  # Save the job object
+    return render(
+        request, 'jobs/job_detail.html', {'job': job}
+    )  # Render the job detail template

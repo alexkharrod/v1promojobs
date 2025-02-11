@@ -1,33 +1,68 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Employer
-from .forms import EmployerForm
+from .forms import EmployerForm  # Import the EmployerForm
 
-@login_required
+@login_required  # Require the user to be logged in
 def employer_profile_create(request):
-    if request.method == 'POST':
-        form = EmployerForm(request.POST, request.FILES)
-        if form.is_valid():
-            employer = form.save(commit=False)
-            employer.user = request.user
-            employer.save()
-            return redirect('employer_profile_detail', pk=employer.pk)
+    """
+    View to create a new employer profile.
+    """
+    if request.method == 'POST':  # Check if the request method is POST
+        form = EmployerForm(
+            request.POST, request.FILES
+        )  # Create an EmployerForm instance with the POST data and files
+        if form.is_valid():  # Check if the form is valid
+            employer = form.save(
+                commit=False
+            )  # Save the form data to create a new employer profile
+            employer.user = request.user  # Set the user for the employer profile
+            employer.save()  # Save the employer profile
+            return redirect(
+                'employer_profile_detail', pk=employer.pk
+            )  # Redirect to the employer profile detail page
     else:
-        form = EmployerForm()
-    return render(request, 'employers/employer_profile_create.html', {'form': form})
+        form = EmployerForm()  # Create an empty EmployerForm instance
+    return render(
+        request, 'employers/employer_profile_create.html', {'form': form}
+    )  # Render the employer profile create template
 
-@login_required
+
+@login_required  # Require the user to be logged in
 def employer_profile_edit(request, pk):
-    employer = get_object_or_404(Employer, pk=pk, user=request.user)
-    if request.method == 'POST':
-        form = EmployerForm(request.POST, request.FILES, instance=employer)
-        if form.is_valid():
-            form.save()
-            return redirect('employer_profile_detail', pk=employer.pk)
+    """
+    View to edit an existing employer profile.
+    """
+    employer = get_object_or_404(
+        Employer, pk=pk, user=request.user
+    )  # Get the employer object or return a 404 error if not found
+    if request.method == 'POST':  # Check if the request method is POST
+        form = EmployerForm(
+            request.POST, request.FILES, instance=employer
+        )  # Create an EmployerForm instance with the POST data, files, and the existing employer profile
+        if form.is_valid():  # Check if the form is valid
+            form.save()  # Save the form data to update the employer profile
+            return redirect(
+                'employer_profile_detail', pk=employer.pk
+            )  # Redirect to the employer profile detail page
     else:
-        form = EmployerForm(instance=employer)
-    return render(request, 'employers/employer_profile_edit.html', {'form': form, 'employer': employer})
+        form = EmployerForm(
+            instance=employer
+        )  # Create an EmployerForm instance with the existing employer profile
+    return render(
+        request,
+        'employers/employer_profile_edit.html',
+        {'form': form, 'employer': employer},
+    )  # Render the employer profile edit template
+
 
 def employer_profile_detail(request, pk):
-    employer = get_object_or_404(Employer, pk=pk)
-    return render(request, 'employers/employer_profile_detail.html', {'employer': employer})
+    """
+    Displays the details of a specific employer profile.
+    """
+    employer = get_object_or_404(
+        Employer, pk=pk
+    )  # Get the employer object or return a 404 error if not found
+    return render(
+        request, 'employers/employer_profile_detail.html', {'employer': employer}
+    )  # Render the employer profile detail template
