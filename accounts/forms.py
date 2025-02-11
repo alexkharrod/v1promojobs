@@ -28,13 +28,15 @@ class RegistrationForm(UserCreationForm):
 class EmployerProfileForm(forms.ModelForm):
     class Meta:
         model = Employer
+        fields = ['company_name', 'company_description', 'website', 'logo']
+        model = Employer
         fields = ["company_name", "company_description", "website", "logo"]
 
 
 class JobSeekerProfileForm(forms.ModelForm):
     class Meta:
         model = JobSeeker
-        fields = ["bio", "resume", "skills"]
+        fields = ['bio', 'resume', 'skills']
 
 
 class PasswordResetForm(PasswordResetForm):

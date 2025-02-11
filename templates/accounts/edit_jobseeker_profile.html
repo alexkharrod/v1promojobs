@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Edit Job Seeker Profile</h1>
-  <form method="post" enctype="multipart/form-data">
+  <h2>Edit Job Seeker Profile</h2>
+  <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save</button>
+    <button type="submit">Update Profile</button>
   </form>
 {% endblock %}

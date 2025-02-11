@@ -7,6 +7,7 @@
 - Django 4.2
 - Django REST Framework
 - SQLite Database
+- Redis Cache
 
 ### Frontend Technologies
 - Django Templates
@@ -29,6 +30,7 @@
 # pip
 # virtualenv
 # git
+# redis-server
 ```
 
 ### Environment Setup

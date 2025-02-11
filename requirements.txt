@@ -3,12 +3,16 @@ Django==4.2
 django-formtools==2.5.1
 django-otp==1.5.4
 django-phonenumber-field==8.0.0
+django-ratelimit==4.1.0
+django-redis==5.4.0
 django-two-factor-auth==1.17.0
+djangorestframework==3.15.2
 load-dotenv==0.1.0
 phonenumbers==8.13.54
 pillow==11.1.0
 pypng==0.20220715.0
 python-dotenv==1.0.1
 qrcode==7.4.2
+redis==5.2.1
 sqlparse==0.5.3
 typing_extensions==4.12.2

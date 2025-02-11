@@ -1,100 +1,112 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import JobSeeker, User  # Remove Employer from here
-from employers.models import Employer  # Add this import
-from .forms import EmployerProfileForm, JobSeekerProfileForm, RegistrationForm
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.urls import reverse
+from django.shortcuts import render
+from django.contrib.auth import authenticate
+from django.http import JsonResponse
+from rest_framework.authtoken.models import Token
+from django.views.decorators.csrf import csrf_exempt
+import json
 
+@csrf_exempt
+def obtain_auth_token(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            username = data.get('username')
+            password = data.get('password')
+        except (json.JSONDecodeError, AttributeError):
+            return JsonResponse({'error': 'Invalid request body'}, status=400)
+
+        if not username or not password:
+            return JsonResponse({'error': 'Please provide both username and password'}, status=400)
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            token, _ = Token.objects.get_or_create(user=user)
+            return JsonResponse({'token': token.key})
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
 
 def register(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('profile_success')
+            form.save()
+            return redirect('login')
     else:
-        form = RegistrationForm()
-    return render(request, 'accounts/register.html', {'form': form})
+        form = UserCreationForm()
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
 
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  # Redirect to home page
-            else:
-                return render(request, 'accounts/login.html', {'form': form, 'error': 'Invalid username or password'})
-        else:
-            return render(request, 'accounts/login.html', {'form': form, 'error': 'Invalid username or password'})
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('home')  # Redirect to home page
+from django.contrib.auth import logout
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import EmployerProfileForm, JobSeekerProfileForm
+from employers.models import Employer
+from accounts.models import JobSeeker
 
 @login_required
-@user_passes_test(lambda u: u.user_type == 'employer')
 def edit_employer_profile(request):
     try:
-        employer = request.user.employer
+        employer_profile = request.user.employer
     except Employer.DoesNotExist:
-        employer = Employer(user=request.user)
+        employer_profile = None
 
     if request.method == 'POST':
-        form = EmployerProfileForm(request.POST, request.FILES, instance=employer)
+        form = EmployerProfileForm(request.POST, instance=employer_profile)
         if form.is_valid():
-            form.save()
-            return redirect('profile_success')  # Replace with your success URL
+            employer = form.save(commit=False)
+            employer.user = request.user
+            employer.save()
+            return redirect('profile_success')  # Redirect to a success page
     else:
-        form = EmployerProfileForm(instance=employer)
+        form = EmployerProfileForm(instance=employer_profile)
 
-    return render(request, 'accounts/edit_employer_profile.html', {'form': form})
+    return render(request, 'accounts/edit_employer_profile.html', {'form': form, 'employer_profile': employer_profile})
+
+from django.contrib.auth import logout
 
 @login_required
-@user_passes_test(lambda u: u.user_type == 'jobseeker')
+def profile_success(request):
+    return render(request, 'accounts/profile_success.html')
+
+@login_required
 def edit_jobseeker_profile(request):
     try:
-        jobseeker = request.user.jobseeker
+        jobseeker_profile = request.user.jobseeker
     except JobSeeker.DoesNotExist:
-        jobseeker = JobSeeker(user=request.user)
+        jobseeker_profile = None
 
     if request.method == 'POST':
-        form = JobSeekerProfileForm(request.POST, request.FILES, instance=jobseeker)
+        form = JobSeekerProfileForm(request.POST, instance=jobseeker_profile)
         if form.is_valid():
-            form.save()
-            return redirect('profile_success')  # Replace with your success URL
+            jobseeker = form.save(commit=False)
+            jobseeker.user = request.user
+            jobseeker.save()
+            return redirect('profile_success')  # Redirect to a success page
     else:
-        form = JobSeekerProfileForm(instance=jobseeker)
+        form = JobSeekerProfileForm(instance=jobseeker_profile)
 
-    return render(request, 'accounts/edit_jobseeker_profile.html', {'form': form})
+    return render(request, 'accounts/edit_jobseeker_profile.html', {'form': form, 'jobseeker_profile': jobseeker_profile})
 
-from django.urls import reverse
 
-def profile_success(request):
-    return render(request, 'accounts/profile_success.html', {'otp_url': reverse('two_factor:profile')})
-
-class PasswordResetView(PasswordResetView):
-    template_name = 'accounts/password_reset.html'
-    email_template_name = 'accounts/password_reset_email.html'
-    success_url = '/accounts/password_reset/done/'
-
-class PasswordResetDoneView(PasswordResetDoneView):
-    template_name = 'accounts/password_reset_done.html'
-
-class PasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'accounts/password_reset_confirm.html'
-    success_url = '/accounts/password_reset/complete/'
-
-class PasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = 'accounts/password_reset_complete.html'
+def logout_view(request):
+    logout(request)
+    return redirect('home')

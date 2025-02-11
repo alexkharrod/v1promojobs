@@ -12,6 +12,7 @@ class Job(models.Model):
     industry = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to="job_images/", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

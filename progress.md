@@ -75,3 +75,26 @@
 - Search app created
 - Advanced search functionality implemented
 - Saved searches and alerts implemented
+- Unit tests for searches and alerts logic written
+- Core app created
+- Implemented core functionalities and utilities.
+- Implemented error handling and logging.
+- Configured logging settings in `mysite/settings.py`.
+- Added a log message to the `home` view in `mysite/views.py`.
+- Added a container to the `home.html` template.
+- Created `static/css/style.css` file.
+- Linked the CSS file to the `base.html` template.
+- Added REST framework to the `INSTALLED_APPS` in `mysite/settings.py`.
+- Added REST framework settings to the `mysite/settings.py` file.
+- Added `rest_framework.authtoken` to the `INSTALLED_APPS` in `mysite/settings.py`.
+- Ran migrations to create the `authtoken` table.
+- Created a view in the `accounts` app that allows users to obtain a token.
+- Added a URL for the `obtain_auth_token` view in `accounts/urls.py`.
+- Installed `django-ratelimit` package.
+- Added `ratelimit` to the `INSTALLED_APPS` in `mysite/settings.py`.
+- Added `RatelimitMiddleware` to the `MIDDLEWARE` in `mysite/settings.py`.
+- Configured rate limits in `mysite/settings.py`.
+- Created an OpenAPI specification for the API.
+- Installed the OpenAPI Generator.
+- Generated API clients using OpenAPI Generator with TypeScript axios template and placed generated code in `/src/generated`.
+- Implemented CSRF protection by adding the `{% csrf_token %}` template tag to the `base.html` template.

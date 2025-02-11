@@ -2,8 +2,11 @@
 <html>
 <head>
   <title>V1PromoJobs</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    {% csrf_token %}
   {% block content %}
   {% endblock %}
 </body>
