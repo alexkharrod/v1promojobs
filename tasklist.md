@@ -41,6 +41,7 @@
     *   [ ] Create `search` app: `python manage.py startapp search`
     *   [ ] Implement advanced search functionality with industry-specific filters.
     *   [ ] Implement saved searches and alerts.
+    *   [ ] create tests and test functionality
 
 **7. Core Functionality (core app):**
     *   [ ] Create `core` app: `python manage.py startapp core`

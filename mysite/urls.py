@@ -24,6 +24,7 @@ urlpatterns = [
     path('employers/', include('employers.urls')),
     path('jobs/', include('jobs.urls')),
     path('applications/', include('applications.urls')),
+    path('search/', include('search.urls')),
     path('two_factor/', include('two_factor_urls', namespace='two_factor')),
     path('', views.home, name='home'),
 ]

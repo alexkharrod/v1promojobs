@@ -43,6 +43,9 @@
 - Implemented views for job seekers to apply for jobs.
 - Implemented views for employers to review applications.
 - Wrote unit tests for application management logic.
+- Created `search` app.
+- Implemented advanced search functionality with industry-specific filters.
+- Implemented saved searches and alerts.
 
 **What's left to build:**
 - The rest of the project, as defined in tasklist.md
@@ -69,3 +72,6 @@
 - Job application views implemented
 - Employer application review views implemented
 - Unit tests for application management logic written
+- Search app created
+- Advanced search functionality implemented
+- Saved searches and alerts implemented

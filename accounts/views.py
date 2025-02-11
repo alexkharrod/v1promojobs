@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Employer, JobSeeker, User
-from .forms import EmployerProfileForm, JobSeekerProfileForm, RegistrationForm  # Import RegistrationForm
-from django.contrib.auth import login, authenticate, logout  # Import authenticate and logout
+from .models import JobSeeker, User  # Remove Employer from here
+from employers.models import Employer  # Add this import
+from .forms import EmployerProfileForm, JobSeekerProfileForm, RegistrationForm
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.urls import reverse
+
 
 def register(request):
     if request.method == 'POST':

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Search Jobs</h2>
+  <form method="get">
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+  </form>
+
+  <h3>Search Results</h3>
+  <ul>
+    {% for job in jobs %}
+      <li><a href="{% url 'job_detail' pk=job.pk %}">{{ job.title }}</a> - {{ job.industry }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Saved Searches</h2>
+  <ul>
+    {% for search in saved_searches %}
+      <li>{{ search.query }} - {{ search.industry }} <a href="{% url 'delete_saved_search' pk=search.pk %}">Delete</a></li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'search' %}">New Search</a> | <a href="{% url 'save_search' %}">Save Current Search</a>
+{% endblock %}
