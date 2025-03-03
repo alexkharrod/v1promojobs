@@ -3,7 +3,26 @@ from django.contrib.auth.decorators import login_required  # Import the login_re
 from .models import Job, SavedSearch  # Import the Job and SavedSearch models
 from .forms import JobForm, SavedSearchForm  # Import the JobForm and SavedSearchForm
 from core.models import UserActivity  # Import the UserActivity model
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from django_ratelimit.decorators import ratelimit
+from .serializers import JobSerializer
 
+@ratelimit(key='ip', rate='5/m', method='GET')
+class JobListAPIView(generics.ListAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+@ratelimit(key='ip', rate='5/m', method='GET')
+class JobDetailAPIView(generics.RetrieveAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
 @login_required  # Require the user to be logged in
 def job_create(request):
@@ -105,7 +124,7 @@ def save_search(request):
             saved_search.save()  # Save the saved search
             return redirect(
                 'saved_searches'
-            )  # Redirect to the saved searches page
+            )  # Render the saved searches page
     else:
         form = SavedSearchForm()  # Create an empty SavedSearchForm instance
     return render(
@@ -132,12 +151,12 @@ def delete_saved_search(request, pk):
     Deletes a saved search.
     """
     saved_search = get_object_or_404(
-        SavedSearch, pk=pk, user=request.user
+        Job, pk=pk, user=request.user
     )  # Get the saved search object or return a 404 error if not found
     saved_search.delete()  # Delete the saved search
     return redirect(
         'saved_searches'
-    )  # Redirect to the saved searches page
+    )  # Render the saved searches page
 
 
 def job_detail(request, pk):

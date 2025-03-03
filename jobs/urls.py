@@ -9,4 +9,6 @@ urlpatterns = [
     path('saved_searches/', views.saved_searches, name='saved_searches'),
     path('save_search/', views.save_search, name='save_search'),
     path('delete_saved_search/<int:pk>/', views.delete_saved_search, name='delete_saved_search'),
+    path('api/jobs/', views.JobListAPIView.as_view(), name='job_list_api'),
+    path('api/jobs/<int:pk>/', views.JobDetailAPIView.as_view(), name='job_detail_api'),
 ]

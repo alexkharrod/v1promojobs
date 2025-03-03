@@ -26,5 +26,6 @@ urlpatterns = [
     path('applications/', include('applications.urls')),
     path('search/', include('search.urls')),
     path('two_factor/', include('two_factor_urls', namespace='two_factor')),
+    path('api-auth/', include('rest_framework.urls')),
     path('', views.home, name='home'),
 ]

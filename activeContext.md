@@ -30,3 +30,8 @@
 - Updated the `update_application_status.html` template to display the form.
 - Ran migrations to update the database schema.
 - Implemented user engagement analytics by tracking job views, applications submitted, and employer profile views.
+- Implemented RESTful API using Django REST Framework for the Job model.
+- Added API endpoints for listing and retrieving jobs.
+- Added token-based authentication to the API endpoints.
+- Added REST framework URLs to mysite/urls.py.
+- Implemented rate limiting for the API endpoints.
