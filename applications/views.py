@@ -12,6 +12,7 @@ from .models import Application  # Import the Application model
 from jobs.models import Job  # Import the Job model
 from accounts.models import JobSeeker  # Import the JobSeeker model
 from .forms import ApplicationForm  # Import the ApplicationForm
+from core.models import UserActivity  # Import the UserActivity model
 
 
 @login_required  # Require the user to be logged in
@@ -31,6 +32,9 @@ def apply_for_job(request, job_id):
         )  # Create a new application
         job.applications += 1  # Increment the application count for the job
         job.save()  # Save the job object
+        UserActivity.objects.create(
+            user=request.user, activity_type='application_submitted', details={'job_id': job.pk, 'job_title': job.title}
+        )
         return redirect(
             'application_success'
         )  # Redirect to the application success page

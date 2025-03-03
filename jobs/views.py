@@ -149,6 +149,10 @@ def job_detail(request, pk):
     )  # Get the job object or return a 404 error if not found
     job.views += 1  # Increment the view count for the job
     job.save()  # Save the job object
+    if request.user.is_authenticated:
+        UserActivity.objects.create(
+            user=request.user, activity_type='job_view', details={'job_id': job.pk, 'job_title': job.title}
+        )
     return render(
         request, 'jobs/job_detail.html', {'job': job}
     )  # Render the job detail template

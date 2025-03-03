@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Employer
 from .forms import EmployerForm  # Import the EmployerForm
+from core.models import UserActivity
 
 @login_required  # Require the user to be logged in
 def employer_profile_create(request):
@@ -63,6 +64,10 @@ def employer_profile_detail(request, pk):
     employer = get_object_or_404(
         Employer, pk=pk
     )  # Get the employer object or return a 404 error if not found
+    if request.user.is_authenticated:
+        UserActivity.objects.create(
+            user=request.user, activity_type='employer_profile_view', details={'employer_id': employer.pk, 'employer_name': employer.company_name}
+        )
     return render(
         request, 'employers/employer_profile_detail.html', {'employer': employer}
     )  # Render the employer profile detail template

@@ -24,3 +24,9 @@
 - Added link to manage two-factor authentication in the user's profile page.
 - Started the development server.
 - Installed the `phonenumbers` package.
+- Implemented application tracking by adding a `status` field to the `Application` model.
+- Registered the `Application` model in the admin panel.
+- Created an `ApplicationForm` to allow employers to update the application status.
+- Updated the `update_application_status.html` template to display the form.
+- Ran migrations to update the database schema.
+- Implemented user engagement analytics by tracking job views, applications submitted, and employer profile views.

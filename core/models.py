@@ -14,7 +14,14 @@ class UserActivity(models.Model):
     )  # Foreign key to the User model
     activity_type = models.CharField(
         max_length=255,
-        help_text="Type of user activity (e.g., login, job_search)"
+        help_text="Type of user activity (e.g., login, job_search)",
+        choices=[
+            ('login', 'Login'),
+            ('job_search', 'Job Search'),
+            ('job_view', 'Job View'),
+            ('application_submitted', 'Application Submitted'),
+            ('employer_profile_view', 'Employer Profile View'),
+        ]
     )  # Type of user activity (e.g., login, job_search, profile_view)
     timestamp = models.DateTimeField(
         auto_now_add=True,
