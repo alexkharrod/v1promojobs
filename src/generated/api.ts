@@ -55,6 +55,73 @@ export interface AccountsApiTokenAuthPostRequest {
      */
     'password': string;
 }
+/**
+ * 
+ * @export
+ * @interface Job
+ */
+export interface Job {
+    /**
+     * 
+     * @type {number}
+     * @memberof Job
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    'description': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Job
+     */
+    'employer': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    'location': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    'salary': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    'industry': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    'created_at': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Job
+     */
+    'views': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Job
+     */
+    'applications': number;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -98,6 +165,78 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary List all jobs
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiJobsGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/jobs/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication TokenAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve a specific job
+         * @param {number} pk Primary key of the job to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiJobsPkGet: async (pk: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pk' is not null or undefined
+            assertParamExists('apiJobsPkGet', 'pk', pk)
+            const localVarPath = `/api/jobs/{pk}/`
+                .replace(`{${"pk"}}`, encodeURIComponent(String(pk)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication TokenAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -121,6 +260,31 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.accountsApiTokenAuthPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary List all jobs
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiJobsGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Job>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiJobsGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.apiJobsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Retrieve a specific job
+         * @param {number} pk Primary key of the job to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiJobsPkGet(pk: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Job>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiJobsPkGet(pk, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.apiJobsPkGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -140,6 +304,25 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         accountsApiTokenAuthPost(accountsApiTokenAuthPostRequest: AccountsApiTokenAuthPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<AccountsApiTokenAuthPost200Response> {
             return localVarFp.accountsApiTokenAuthPost(accountsApiTokenAuthPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary List all jobs
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiJobsGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<Job>> {
+            return localVarFp.apiJobsGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve a specific job
+         * @param {number} pk Primary key of the job to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiJobsPkGet(pk: number, options?: RawAxiosRequestConfig): AxiosPromise<Job> {
+            return localVarFp.apiJobsPkGet(pk, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -161,6 +344,29 @@ export class DefaultApi extends BaseAPI {
      */
     public accountsApiTokenAuthPost(accountsApiTokenAuthPostRequest: AccountsApiTokenAuthPostRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).accountsApiTokenAuthPost(accountsApiTokenAuthPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary List all jobs
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public apiJobsGet(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).apiJobsGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve a specific job
+     * @param {number} pk Primary key of the job to retrieve
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public apiJobsPkGet(pk: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).apiJobsPkGet(pk, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -34,3 +34,84 @@ paths:
           description: Invalid request
         '401':
           description: Invalid credentials
+  /api/jobs/:
+    get:
+      summary: List all jobs
+      security:
+        - TokenAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+        '401':
+          description: Unauthorized
+  /api/jobs/{pk}/:
+    get:
+      summary: Retrieve a specific job
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          description: Primary key of the job to retrieve
+          schema:
+            type: integer
+      security:
+        - TokenAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+components:
+  schemas:
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        employer:
+          type: integer
+        location:
+          type: string
+        salary:
+          type: string
+        industry:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        views:
+          type: integer
+        applications:
+          type: integer
+      required:
+        - id
+        - title
+        - description
+        - employer
+        - location
+        - salary
+        - industry
+        - created_at
+        - views
+        - applications
+  securitySchemes:
+    TokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

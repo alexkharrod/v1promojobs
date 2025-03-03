@@ -77,7 +77,6 @@
 - Integrated React for interactive components
 - Added more styling to the base template
 - Moved profile to the right side of the nav bar
-- Provided instructions on how to implement HTTPS
 - Provided best practices for preventing SQL injection
 - Provided best practices for preventing XSS
 - Implemented rate limiting
@@ -86,6 +85,7 @@
 **What's left to build:**
 - Implement application tracking.
 - Implement user engagement analytics.
+- Implement HTTPS
 - The rest of the project, as defined in tasklist.md
 
 **Progress status:**
@@ -144,8 +144,5 @@
 - Integrated React for interactive components
 - Added more styling to the base template
 - Moved profile to the right side of the nav bar
-- Provided instructions on how to implement HTTPS
-- Provided best practices for preventing SQL injection
-- Provided best practices for preventing XSS
 - Implemented rate limiting
 - Implemented job posting performance metrics

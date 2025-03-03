@@ -35,3 +35,5 @@
 - Added token-based authentication to the API endpoints.
 - Added REST framework URLs to mysite/urls.py.
 - Implemented rate limiting for the API endpoints.
+- Generated API clients using OpenAPI Generator with TypeScript axios template and placed generated code in `/src/generated`.
+- Verified that all necessary packages are installed and added to `requirements.txt`.

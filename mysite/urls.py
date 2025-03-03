@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mysite import views
+import mysite.views as mysite_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +27,5 @@ urlpatterns = [
     path('search/', include('search.urls')),
     path('two_factor/', include('two_factor_urls', namespace='two_factor')),
     path('api-auth/', include('rest_framework.urls')),
-    path('', views.home, name='home'),
+    path('', mysite_views.home, name='home'),
 ]
